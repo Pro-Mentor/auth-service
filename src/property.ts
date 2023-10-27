@@ -19,7 +19,7 @@ declare global {
 
 const setLocals = (app: Express) => {
     app.locals.port = 4000;
-    app.locals.host = "sltc.app.promentor.local";
+    app.locals.host = "localhost";
 };
 
 export { setLocals };
