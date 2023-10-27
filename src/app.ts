@@ -18,6 +18,8 @@ const app = express();
 // configer the application middlewares
 configApplicationMiddleware(app);
 
+app.use("/hello", helloRouter);
+
 // kyecloak auth middleware
 app.use(keycloakAuthMiddleware);
 
@@ -25,8 +27,6 @@ app.use(keycloakAuthMiddleware);
 app.use(requireAuthMiddleware);
 
 app.use(requirerolesMiddleware(["user", "admin"]));
-
-app.use("/hello", keycloakAuthMiddleware, helloRouter);
 
 app.use("/api/v1/auth/students", studentRouter);
 
