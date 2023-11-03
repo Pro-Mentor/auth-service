@@ -5,13 +5,12 @@ import {
     globalErrorHandleMiddleware,
     keycloakAuthMiddleware,
     requireAuthMiddleware,
-    requirerolesMiddleware,
 } from "@promentor-app/shared-lib";
 
 import configApplicationMiddleware from "./middleware/application-middleware-config";
 
 import helloRouter from "./routes/hello-routes";
-import studentRouter from "./routes/student-routes";
+import authRouter from "./routes/root-router";
 
 const app = express();
 
@@ -23,12 +22,11 @@ app.use("/hello", helloRouter);
 // kyecloak auth middleware
 app.use(keycloakAuthMiddleware);
 
+// set the routers
+app.use("/api/v1/auth", authRouter);
+
 // require auth middleware
 app.use(requireAuthMiddleware);
-
-app.use(requirerolesMiddleware(["user", "admin"]));
-
-app.use("/api/v1/auth/students", studentRouter);
 
 // unhandled routes middleware
 app.use(unhandledRouteMiddleware);

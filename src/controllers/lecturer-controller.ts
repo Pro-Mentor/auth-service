@@ -6,7 +6,7 @@ import { KeycloakCreateUserRequest } from "../models/request/keycloak-requrest-m
 import createUserInGivenKeyCloakTenant from "../service/rest_api/keycloak-rest-service";
 import { generateTempPassword } from "../utils/password-handler";
 
-const createStudent = async (req: Request, res: Response, next: NextFunction) => {
+const createLecturer = async (req: Request, res: Response, next: NextFunction) => {
     let keyTenant;
     let keyclockIdpServerUrl;
 
@@ -25,7 +25,7 @@ const createStudent = async (req: Request, res: Response, next: NextFunction) =>
             firstName,
             lastName,
             enabled: true,
-            groups: ["student"],
+            groups: ["lecture"],
             credentials: [
                 {
                     type: "password",
@@ -49,14 +49,13 @@ const createStudent = async (req: Request, res: Response, next: NextFunction) =>
             req.headers.authorization as string
         );
 
-        return res.status(HttpStatusCode.Created).json({ message: "Student created successfully" });
+        return res.status(HttpStatusCode.Created).json({ message: "Lecture created successfully" });
     } catch (error) {
         return next(error);
     }
 };
 
-const updateStudent = (req: Request, res: Response) => {
-    res.send("Hello from students");
+export {
+    // eslint-disable-next-line import/prefer-default-export
+    createLecturer,
 };
-
-export { createStudent, updateStudent };

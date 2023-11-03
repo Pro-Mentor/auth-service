@@ -2,7 +2,7 @@ import { Router } from "express";
 import { body } from "express-validator";
 import { requestValidationMiddleware } from "@promentor-app/shared-lib";
 
-import { createStudent } from "../controllers/student-controller";
+import { createLecturer } from "../controllers/lecturer-controller";
 
 const router = Router();
 
@@ -25,7 +25,7 @@ router.post(
             .withMessage("Should have at least 3 characters"),
     ],
     requestValidationMiddleware,
-    createStudent
+    createLecturer
 );
 
 export default router;

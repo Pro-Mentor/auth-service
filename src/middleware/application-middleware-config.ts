@@ -2,6 +2,9 @@ import { Express } from "express";
 import { json } from "body-parser";
 import helmet from "helmet";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+
+import { swaggerJSDocSpecs } from "../config/swagger-config";
 
 /**
  * this is for the configer the application middleware
@@ -9,6 +12,18 @@ import cors from "cors";
  * @returns void
  */
 const configApplicationMiddleware = (app: Express) => {
+    // swagger ui
+    app.use(
+        "/api/v1/auth/api-docs",
+        swaggerUi.serve,
+        swaggerUi.setup(swaggerJSDocSpecs, {
+            swaggerOptions: {
+                docExpansions: "none",
+                persistAuthorization: true,
+            },
+        })
+    );
+
     app.use(json());
 
     /*
