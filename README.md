@@ -2,14 +2,19 @@
 
 Handling Users and Authentication
 
+### swagger url
+
+http://sltc.app.promentor.local:8081/api/v1/auth/api-docs
+
 ### configure the service
 
 -   create a `.env` file in the root of the derectory
 -   replace the required properties of the .env values
 
 ```
+HOST=sltc.app.promentor.local
 PORT=8081
-KEYCLOK_CLIENT_ID=pro-mentor-auth-service
+KEYCLOAK_CLIENT_ID=pro-mentor-auth-service
 SLTC_CLIENT_SECRET=r0*********************dv
 ```
 
