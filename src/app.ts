@@ -3,7 +3,6 @@ import express from "express";
 import {
     unhandledRouteMiddleware,
     globalErrorHandleMiddleware,
-    keycloakAuthMiddleware,
     requireAuthMiddleware,
 } from "@promentor-app/shared-lib";
 
@@ -18,9 +17,6 @@ const app = express();
 configApplicationMiddleware(app);
 
 app.use("/hello", helloRouter);
-
-// kyecloak auth middleware
-app.use(keycloakAuthMiddleware);
 
 // set the routers
 app.use("/api/v1/auth", authRouter);

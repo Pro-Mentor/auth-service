@@ -3,7 +3,7 @@ import { getKeycloakIdpUrl, getTenantIdFromURL } from "@promentor-app/shared-lib
 import { HttpStatusCode } from "axios";
 
 import { KeycloakCreateUserRequest } from "../models/request/keycloak-requrest-model";
-import createUserInGivenKeyCloakTenant from "../service/rest_api/keycloak-rest-service";
+import { createUserInGivenKeyCloakTenant } from "../service/rest_api/keycloak-rest-service";
 import { generateTempPassword } from "../utils/password-handler";
 
 const createLecturer = async (req: Request, res: Response, next: NextFunction) => {

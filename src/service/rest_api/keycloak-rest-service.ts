@@ -1,6 +1,10 @@
 import { ResponseBodyFormat, invokeRestEndpoint } from "@promentor-app/shared-lib";
 
-import { KeycloakCreateUserRequest } from "../../models/request/keycloak-requrest-model";
+import {
+    KeycloakCreateUserRequest,
+    KycloakGetUserTokenRequestBody,
+} from "../../models/request/keycloak-requrest-model";
+import { KeycloakGetTokenResponse } from "../../models/response/keycloak-response-modal";
 
 /**
  * this function creates a user in a given keycloak tenant
@@ -61,4 +65,19 @@ const createUserInGivenKeyCloakTenant = async (
     );
 };
 
-export default createUserInGivenKeyCloakTenant;
+const getUserTokenInGivenKeyCloakTenant = async (
+    keyclockIdpServerUrl: string,
+    keyTenant: string,
+    body: KycloakGetUserTokenRequestBody
+): Promise<KeycloakGetTokenResponse | undefined> => {
+    return invokeRestEndpoint<KeycloakGetTokenResponse>(
+        `${keyclockIdpServerUrl}/realms/${keyTenant}/protocol/openid-connect/token`,
+        "POST",
+        body,
+        {
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+    );
+};
+
+export { createUserInGivenKeyCloakTenant, getUserTokenInGivenKeyCloakTenant };

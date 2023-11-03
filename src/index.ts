@@ -24,7 +24,7 @@ const envValidation = () => {
         throw new Error("The host must be defined");
     }
 
-    if (!process.env.KEYCLOK_CLIENT_ID) {
+    if (!process.env.KEYCLOAK_CLIENT_ID) {
         throw new Error("The keycloak client id must be defined");
     }
 };

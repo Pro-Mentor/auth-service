@@ -3,7 +3,7 @@ import { RequestBodyFormat } from "@promentor-app/shared-lib";
 /**
  * this is Cridentials object for keycloak user creation
  */
-interface KeyclockUserCreateCridentials {
+interface KeycloakUserCreateCridentials {
     type: string;
     temporary: boolean;
     value: string;
@@ -30,8 +30,21 @@ interface KeycloakCreateUserRequest extends RequestBodyFormat {
     email: string;
     enabled: boolean;
     groups: string[];
-    credentials: KeyclockUserCreateCridentials[];
+    credentials: KeycloakUserCreateCridentials[];
     access: KeycloakCreateUserAccess;
 }
 
-export { KeycloakCreateUserRequest, KeycloakCreateUserAccess, KeyclockUserCreateCridentials };
+interface KycloakGetUserTokenRequestBody extends RequestBodyFormat {
+    grant_type: string;
+    username: string;
+    password: string;
+    client_id: string;
+    client_secret: string;
+}
+
+export {
+    KeycloakCreateUserRequest,
+    KeycloakCreateUserAccess,
+    KeycloakUserCreateCridentials,
+    KycloakGetUserTokenRequestBody,
+};
