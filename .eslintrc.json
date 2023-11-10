@@ -27,6 +27,12 @@
         "import/extensions": "off",
         "no-console": "off",
         "import/no-extraneous-dependencies": "off",
+        "no-underscore-dangle": [
+            "error",
+            {
+                "allowAfterThis": true
+            }
+        ],
         "prettier/prettier": [
             "off",
             {

@@ -1,10 +1,19 @@
 import { NextFunction, Request, Response } from "express";
-import { getKeycloakIdpUrl, getTenantIdFromURL } from "@promentor-app/shared-lib";
+import {
+    CustomException,
+    ErrorCode,
+    getKeycloakIdpUrl,
+    getTenantIdFromURL,
+    rabbitMQPublihserChannelWrapper,
+} from "@promentor-app/shared-lib";
 import { HttpStatusCode } from "axios";
 
 import { KeycloakCreateUserRequest } from "../models/request/keycloak-requrest-model";
 import { createUserInGivenKeyCloakTenant } from "../service/rest_api/keycloak-rest-service";
 import { generateTempPassword } from "../utils/password-handler";
+import { User } from "../models/domain/User";
+
+import UserTemparyPasswordCreatedPublisher from "../events/publishers/user-tempary-password-created-publisher";
 
 const createStudent = async (req: Request, res: Response, next: NextFunction) => {
     let keyTenant;
@@ -14,10 +23,9 @@ const createStudent = async (req: Request, res: Response, next: NextFunction) =>
         keyTenant = getTenantIdFromURL(req.headers.origin as string);
         keyclockIdpServerUrl = getKeycloakIdpUrl(req.headers.origin as string);
 
-        const { username, email, firstName, lastName } = req.body;
+        const { username, email, firstName, lastName, contactNumber } = req.body;
 
         const tempPassword = generateTempPassword();
-        console.log("generated tempary password: ", tempPassword);
 
         const user: KeycloakCreateUserRequest = {
             username,
@@ -48,6 +56,36 @@ const createStudent = async (req: Request, res: Response, next: NextFunction) =>
             user,
             req.headers.authorization as string
         );
+
+        const existingUser = await User.findOne({ email }).exec();
+
+        if (existingUser) {
+            console.error("User already exists");
+            throw new CustomException(
+                "User Created in IDP server. But User already exists in DB",
+                ErrorCode.STUDENT_ALREADY_EXISTS_IN_DB,
+                HttpStatusCode.Conflict
+            );
+        }
+
+        const dbUser = User.build({
+            username,
+            email,
+            firstName,
+            lastName,
+            contactNumber,
+            profileUrl: "",
+        });
+
+        await dbUser.save();
+
+        await new UserTemparyPasswordCreatedPublisher(rabbitMQPublihserChannelWrapper.publisherChannel).publish({
+            username,
+            email,
+            temparyPassword: tempPassword,
+            firstName,
+            lastName,
+        });
 
         return res.status(HttpStatusCode.Created).json({ message: "Student created successfully" });
     } catch (error) {

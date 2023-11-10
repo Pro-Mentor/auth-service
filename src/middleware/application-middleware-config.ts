@@ -30,7 +30,11 @@ const configApplicationMiddleware = (app: Express) => {
      * cors configuration
      */
     const corsOptions = {
-        origin: [/^http:\/\/[a-zA-Z-]+\.app\.promentor\.local:3000$/],
+        origin: [
+            /^http:\/\/[a-zA-Z-]+\.app\.promentor\.local:3000$/,
+            /^http:\/\/[a-zA-Z-]+\.app\.promentor\.local:8081$/,
+            "http://localhost:8081",
+        ],
         method: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
     };

@@ -23,6 +23,7 @@ router.post(
             .optional()
             .isLength({ min: 3 })
             .withMessage("Should have at least 3 characters"),
+        body("contactNumber").trim().optional().isMobilePhone(["any"]).withMessage("Should have valid contact number"),
     ],
     requestValidationMiddleware,
     createStudent
