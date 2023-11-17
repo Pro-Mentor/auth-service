@@ -2,9 +2,7 @@
 import dotenv from "dotenv";
 import { AddressInfo } from "net";
 
-if (process.env.NODE_ENV !== "development") {
-    dotenv.config();
-}
+dotenv.config();
 
 import app from "./app";
 import { setLocals } from "./property";
@@ -24,6 +22,10 @@ const envValidation = () => {
 
     if (!host) {
         throw new Error("The host must be defined");
+    }
+
+    if (!process.env.SERVICE_NAME) {
+        throw new Error("The service name must be defined");
     }
 
     if (!process.env.KEYCLOAK_CLIENT_ID) {

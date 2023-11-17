@@ -8,7 +8,7 @@ import UasrTemparyPasswordCreatedListener from "../events/listeners/user-tempary
  * @returns {Promise<void>}
  */
 const connectToRabbitMQ: () => Promise<void> = async () => {
-    return rabbitMQWrapper.connect(process.env.RABBITMQ_CONNECTION as string);
+    return rabbitMQWrapper.connect(process.env.RABBITMQ_CONNECTION as string, process.env.SERVICE_NAME as string);
 };
 
 /**
