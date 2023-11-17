@@ -85,6 +85,7 @@ const createStudent = async (req: Request, res: Response, next: NextFunction) =>
             temparyPassword: tempPassword,
             firstName,
             lastName,
+            tenantId: keyTenant,
         });
 
         return res.status(HttpStatusCode.Created).json({ message: "Student created successfully" });
