@@ -34,6 +34,21 @@ interface KeycloakCreateUserRequest extends RequestBodyFormat {
     access: KeycloakCreateUserAccess;
 }
 
+/**
+ * this is request body for keycloak user update
+ */
+interface KeycloakUpdateUserByIdRequest extends RequestBodyFormat {
+    firstName: string;
+    lastName: string;
+    email: string;
+    enabled: boolean;
+    access: KeycloakCreateUserAccess;
+    emailVerified: boolean;
+}
+
+/**
+ * this is request body for keycloak user token
+ */
 interface KycloakGetUserTokenRequestBody extends RequestBodyFormat {
     grant_type: string;
     username: string;
@@ -47,4 +62,5 @@ export {
     KeycloakCreateUserAccess,
     KeycloakUserCreateCridentials,
     KycloakGetUserTokenRequestBody,
+    KeycloakUpdateUserByIdRequest,
 };

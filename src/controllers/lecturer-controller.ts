@@ -25,7 +25,7 @@ const createLecturer = async (req: Request, res: Response, next: NextFunction) =
             firstName,
             lastName,
             enabled: true,
-            groups: ["lecture"],
+            groups: ["lecturer"],
             credentials: [
                 {
                     type: "password",

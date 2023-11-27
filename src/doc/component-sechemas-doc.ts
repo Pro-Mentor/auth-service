@@ -2,14 +2,30 @@
  * @swagger
  * components:
  *   schemas:
- *     CreateUserSuccessResponse:
+ *     SuccessMessageResponse:
  *       type: object
  *       properties:
- *         message:
- *           type: string
- *           description: message of the response
+ *         data:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: message of the response
  *       example:
  *         message: user created successfully
+ *
+ *     SimpleGroupResponse:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: group id
+ *         name:
+ *           type: string
+ *           description: group name
+ *         path:
+ *           type: string
+ *           description: group path
  *
  *     ErrorMessageResponse:
  *       type: object
