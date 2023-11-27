@@ -1,4 +1,4 @@
-import { rabbitMQWrapper, rabbitMQPublihserChannelWrapper } from "@promentor-app/shared-lib";
+import { rabbitMQWrapper, rabbitMQPublihserChannelWrapper, pgConnectionWrapper } from "@promentor-app/shared-lib";
 import mongoose from "mongoose";
 
 import UasrTemparyPasswordCreatedListener from "../events/listeners/user-tempary-password-created-listener";
@@ -70,4 +70,25 @@ const connectToMongoDB = async () => {
     }
 };
 
-export { connectToRabbitMQ, rabbitMQWrapperSetup, connectToMongoDB };
+/**
+ * this function is used to connect to the PostgreSQL server
+ * @returns {Promise<void>}
+ * @throws {Error}
+ */
+const connectToPostgreSQL = async () => {
+    try {
+        await pgConnectionWrapper.connect(
+            process.env.PG_USER as string,
+            process.env.PG_HOST as string,
+            process.env.PG_DATABASE as string,
+            process.env.PG_PASSWORD as string,
+            Number(process.env.PG_PORT)
+        );
+        console.info("Connected to the PostgreSQL database successfully");
+    } catch (error) {
+        console.error("Error occured while connecting to the PostgreSQL server: ", error);
+        throw error;
+    }
+};
+
+export { connectToRabbitMQ, rabbitMQWrapperSetup, connectToMongoDB, connectToPostgreSQL };

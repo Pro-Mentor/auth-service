@@ -7,7 +7,7 @@ dotenv.config();
 import app from "./app";
 import { setLocals } from "./property";
 
-import { connectToMongoDB, connectToRabbitMQ, rabbitMQWrapperSetup } from "./config/server-config";
+import { connectToMongoDB, connectToPostgreSQL, connectToRabbitMQ, rabbitMQWrapperSetup } from "./config/server-config";
 
 setLocals(app);
 
@@ -39,6 +39,26 @@ const envValidation = () => {
     if (!process.env.RABBITMQ_CONNECTION) {
         throw new Error("RabbmitMQ connection string is required");
     }
+
+    if (!process.env.PG_USER) {
+        throw new Error("The postgresql user must be defined");
+    }
+
+    if (!process.env.PG_HOST) {
+        throw new Error("The postgresql host must be defined");
+    }
+
+    if (!process.env.PG_DATABASE) {
+        throw new Error("The postgresql database must be defined");
+    }
+
+    if (!process.env.PG_PASSWORD) {
+        throw new Error("The postgresql password must be defined");
+    }
+
+    if (!process.env.PG_PORT) {
+        throw new Error("The postgresql port must be defined");
+    }
 };
 
 const startTheServer = async () => {
@@ -59,6 +79,8 @@ const start = () => {
                 await rabbitMQWrapperSetup();
 
                 await connectToMongoDB();
+
+                await connectToPostgreSQL();
 
                 startTheServer();
             } catch (error) {

@@ -22,5 +22,5 @@ it("password should have at least 1 lowercase letter", () => {
 
 it("password should have at least 1 symbol", () => {
     const password = generateTempPassword();
-    expect(password).toMatch(/[!@#$%&*]/);
+    expect(password).toMatch(/[!@#$%&*=]/);
 });
