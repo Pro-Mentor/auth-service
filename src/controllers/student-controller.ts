@@ -99,7 +99,7 @@ const createStudent = async (req: Request, res: Response, next: NextFunction) =>
         const tempPassword = generateTempPassword();
 
         // create group list
-        const groupList = ["student"];
+        const groupList = [UserGroups.STUDENT as string];
 
         // update group path and add to group list
         if (studentClass) {
