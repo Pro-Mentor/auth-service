@@ -74,7 +74,6 @@ const userSchema = new Schema<UserDoc, UserModel>(
  * @returns {UserDoc} a new User document
  */
 userSchema.statics.build = (attr: IUser) => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     return new User(attr);
 };
 

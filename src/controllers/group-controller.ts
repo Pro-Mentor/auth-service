@@ -1,4 +1,4 @@
-import { GroupNotFoundException, getKeycloakIdpUrl, getTenantIdFromURL } from "@promentor-app/shared-lib";
+import { GroupNotFoundException } from "@promentor-app/shared-lib";
 import { NextFunction, Request, Response } from "express";
 import { HttpStatusCode } from "axios";
 
@@ -8,12 +8,9 @@ import {
 } from "../service/rest_api/keycloak-rest-service";
 
 const getSubGroupsInGivenTenant = async (req: Request, res: Response, next: NextFunction) => {
-    let keyTenant;
-    let keyclockIdpServerUrl;
-
     try {
-        keyTenant = getTenantIdFromURL(req.headers.origin as string);
-        keyclockIdpServerUrl = getKeycloakIdpUrl(req.headers.origin as string);
+        const keyTenant = req.keycloakTenant as string;
+        const keyclockIdpServerUrl = req.keycloakIdpServerUrl as string;
 
         const { groupName } = req.params;
 

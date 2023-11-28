@@ -1,16 +1,13 @@
-import { AxiosException, ErrorCode, getKeycloakIdpUrl, getTenantIdFromURL } from "@promentor-app/shared-lib";
+import { AxiosException, ErrorCode } from "@promentor-app/shared-lib";
 import { NextFunction, Request, Response } from "express";
 
 import { HttpStatusCode } from "axios";
 import { getUserTokenInGivenKeyCloakTenant } from "../service/rest_api/keycloak-rest-service";
 
 const getAccessTokenForTheUser = async (req: Request, res: Response, next: NextFunction) => {
-    let keyTenant;
-    let keyclockIdpServerUrl;
-
     try {
-        keyTenant = getTenantIdFromURL(req.headers.origin as string);
-        keyclockIdpServerUrl = getKeycloakIdpUrl(req.headers.origin as string);
+        const keyTenant = req.keycloakTenant as string;
+        const keyclockIdpServerUrl = req.keycloakIdpServerUrl as string;
 
         const response = await getUserTokenInGivenKeyCloakTenant(keyclockIdpServerUrl, keyTenant, {
             username: req.body.username,
