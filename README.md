@@ -15,10 +15,19 @@ http://sltc.app.promentor.local:8081/api/v1/auth/api-docs
 HOST=sltc.app.promentor.local
 PORT=8081
 SERVICE_NAME=pro-mentor-auth-service
+
 KEYCLOAK_CLIENT_ID=pro-mentor-auth-service
 SLTC_CLIENT_SECRET=r0*********************dv
+
 MONGODB_URI=mongodb://root:root@localhost:27017/auth-service?authSource=admin
+
 RABBITMQ_CONNECTION=amqp://admin:admin@localhost:5672
+
+PG_USER=keycloak
+PG_PASSWORD=keycloak
+PG_DATABASE=keycloak
+PG_HOST=localhost
+PG_PORT=5432
 ```
 
 ### CI/CD
