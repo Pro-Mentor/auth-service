@@ -31,6 +31,7 @@ import {
     KeycloakFilterUsersCountResponse,
     KeycloakFilterUsersResponse,
 } from "../models/response/keycloak-db-response-modal";
+import UserCreatedPublisher from "../events/publishers/user-created-publisher";
 
 const getStudentById = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -172,6 +173,16 @@ const createStudent = async (req: Request, res: Response, next: NextFunction) =>
             username,
             email,
             temparyPassword: tempPassword,
+            firstName,
+            lastName,
+            tenantId: keyTenant,
+        });
+
+        // publish the event for notify the new user created
+        await new UserCreatedPublisher(rabbitMQPublihserChannelWrapper.publisherChannel).publish({
+            username,
+            email,
+            id: dbUser.id,
             firstName,
             lastName,
             tenantId: keyTenant,

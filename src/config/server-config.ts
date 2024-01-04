@@ -16,7 +16,7 @@ const connectToRabbitMQ: () => Promise<void> = async () => {
  * @returns {void}
  */
 const addListeners = () => {
-    new UasrTemparyPasswordCreatedListener(rabbitMQWrapper.conn).listen();
+    // new UasrTemparyPasswordCreatedListener(rabbitMQWrapper.conn).listen();
 };
 
 /**
