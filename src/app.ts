@@ -9,7 +9,7 @@ import {
 import configApplicationMiddleware from "./middleware/application-middleware-config";
 
 import helloRouter from "./routes/hello-routes";
-import authRouter from "./routes/root-router";
+import rootRouter from "./routes/root-router";
 
 const app = express();
 
@@ -19,10 +19,10 @@ configApplicationMiddleware(app);
 app.use("/hello", helloRouter);
 
 // set the routers
-app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/auth", rootRouter);
 
 // require auth middleware
-app.use(requireAuthMiddleware);
+// app.use(requireAuthMiddleware);
 
 // unhandled routes middleware
 app.use(unhandledRouteMiddleware);
