@@ -56,7 +56,7 @@ router.get(
 router.get(
     "/count",
     [
-        query("groups").trim().isArray({ min: 1 }).withMessage("Should be a array with at least 1 item"),
+        query("groups").trim(),
         query("active").trim().optional().isBoolean().withMessage("Should be a boolean"),
         query("search").trim().optional().isString().withMessage("Should be a string"),
     ],

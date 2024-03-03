@@ -40,13 +40,6 @@ router.post(
     createLecturer
 );
 
-router.get(
-    "/:id",
-    [param("id").trim().isUUID(4).withMessage("lecturer Id should be a valid uuid v4")],
-    requestValidationMiddleware,
-    getLectureById
-);
-
 router.patch(
     "/:id",
     [
@@ -87,12 +80,19 @@ router.get(
 router.get(
     "/count",
     [
-        query("groups").trim().isArray({ min: 1 }).withMessage("Should be a array with at least 1 item"),
+        query("groups").trim(),
         query("active").trim().optional().isBoolean().withMessage("Should be a boolean"),
         query("search").trim().optional().isString().withMessage("Should be a string"),
     ],
     requestValidationMiddleware,
     getLecturersCount
+);
+
+router.get(
+    "/:id",
+    [param("id").trim().isUUID(4).withMessage("lecturer Id should be a valid uuid v4")],
+    requestValidationMiddleware,
+    getLectureById
 );
 
 router.put(
