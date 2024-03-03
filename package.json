@@ -37,7 +37,7 @@
     },
     "homepage": "https://github.com/Pro-Mentor/auth-service#readme",
     "dependencies": {
-        "@promentor-app/shared-lib": "^1.0.28",
+        "@promentor-app/shared-lib": "^1.0.30",
         "amqplib": "^0.10.3",
         "axios": "^1.5.1",
         "body-parser": "^1.20.2",
