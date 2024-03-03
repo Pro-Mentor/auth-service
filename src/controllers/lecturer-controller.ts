@@ -299,7 +299,7 @@ const getLecturers = async (req: Request, res: Response, next: NextFunction) => 
                 keyclockIdpServerUrl,
                 keyTenant,
                 req.headers.authorization as string,
-                "lecturer"
+                UserGroups.LECTURER
             );
 
             if (!groupList || groupList.length < 1) {
@@ -339,19 +339,46 @@ const getLecturers = async (req: Request, res: Response, next: NextFunction) => 
 const getLecturersCount = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const keyTenant = req.keycloakTenant as string;
+        const keyclockIdpServerUrl = req.keycloakIdpServerUrl as string;
 
         const tenantId = await getTenantId(keyTenant);
 
         const { groups, active, search } = req.query;
 
+        if (!(!groups || Array.isArray(groups))) {
+            console.error("groups should be valid array or null");
+            throw new InvalidArrayException();
+        }
+
+        let finalGroups = groups;
+
+        if (!groups || groups.length < 1) {
+            const groupList = await getGroupInGivenKeyCloakTenant(
+                keyclockIdpServerUrl,
+                keyTenant,
+                req.headers.authorization as string,
+                UserGroups.LECTURER
+            );
+
+            if (!groupList || groupList.length < 1) {
+                throw new InvalidArrayException();
+            }
+
+            finalGroups = [groupList[0].id];
+        }
+
         let result: KeycloakFilterUsersCountResponse;
 
         if (!search) {
-            result = await queryUsersCountWithoutSearch(tenantId, groups as string[], active as unknown as boolean);
+            result = await queryUsersCountWithoutSearch(
+                tenantId,
+                finalGroups as string[],
+                active as unknown as boolean
+            );
         } else {
             result = await queryUsersCountWithSearch(
                 tenantId,
-                groups as string[],
+                finalGroups as string[],
                 search as string,
                 active as unknown as boolean
             );
