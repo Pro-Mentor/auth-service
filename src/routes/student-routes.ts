@@ -43,7 +43,7 @@ router.post(
 router.get(
     "/",
     [
-        query("groups").trim().isArray({ min: 1 }).withMessage("Should be a array with at least 1 item"),
+        query("groups").trim(),
         query("limit").trim().optional().isInt().withMessage("Should be a number"),
         query("offset").trim().optional().isInt().withMessage("Should be a number"),
         query("active").trim().optional().isBoolean().withMessage("Should be a boolean"),

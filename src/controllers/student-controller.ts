@@ -1,11 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import { CustomException, ErrorCode, UserGroups, rabbitMQPublihserChannelWrapper } from "@promentor-app/shared-lib";
+import {
+    CustomException,
+    ErrorCode,
+    InvalidArrayException,
+    UserGroups,
+    rabbitMQPublihserChannelWrapper,
+} from "@promentor-app/shared-lib";
 import { HttpStatusCode } from "axios";
 
 import { KeycloakCreateUserRequest, KeycloakUpdateUserByIdRequest } from "../models/request/keycloak-requrest-model";
 import {
     assignGroupToUserInGivenKeyCloakTenant,
     createUserInGivenKeyCloakTenant,
+    getGroupInGivenKeyCloakTenant,
     getUserByIdInGivenKeyCloakTenant,
     getUserGroupsByUserIdInGivenKeyCloakTenant,
     removeGroupFromUserInGivenKeyCloakTenant,
@@ -287,17 +294,40 @@ const updateStudent = async (req: Request, res: Response, next: NextFunction) =>
 const getStudents = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const keyTenant = req.keycloakTenant as string;
+        const keyclockIdpServerUrl = req.keycloakIdpServerUrl as string;
 
         const tenantId = await getTenantId(keyTenant);
 
         const { groups, limit, offset, active, search } = req.query;
+
+        if (!(!groups || Array.isArray(groups))) {
+            console.error("groups should be valid array or null");
+            throw new InvalidArrayException();
+        }
+
+        let finalGroups = groups;
+
+        if (!groups || groups.length < 1) {
+            const groupList = await getGroupInGivenKeyCloakTenant(
+                keyclockIdpServerUrl,
+                keyTenant,
+                req.headers.authorization as string,
+                "student"
+            );
+
+            if (!groupList || groupList.length < 1) {
+                throw new InvalidArrayException();
+            }
+
+            finalGroups = [groupList[0].id];
+        }
 
         let result: KeycloakFilterUsersResponse[];
 
         if (!search) {
             result = await queryUsersWithoutSearch(
                 tenantId,
-                groups as string[],
+                finalGroups as string[],
                 active as unknown as boolean,
                 limit as unknown as number,
                 offset as unknown as number
@@ -305,7 +335,7 @@ const getStudents = async (req: Request, res: Response, next: NextFunction) => {
         } else {
             result = await queryUsersWithSearch(
                 tenantId,
-                groups as string[],
+                finalGroups as string[],
                 search as string,
                 active as unknown as boolean,
                 limit as unknown as number,
