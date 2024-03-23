@@ -31,7 +31,7 @@ router.post(
             .optional()
             .isLength({ min: 3 })
             .withMessage("Should have at least 3 characters"),
-        body("contactNumber").trim().optional().isMobilePhone("any").withMessage("Should have valid contact number"),
+        body("contactNumber").trim().optional(),
     ],
     requestValidationMiddleware,
     createResourceManager
@@ -68,7 +68,7 @@ router.patch(
             .isLength({ min: 3 })
             .withMessage("Should have at least 3 characters"),
         body("enabled").trim().optional().isBoolean().withMessage("Should be a boolean"),
-        body("contactNumber").trim().optional().isMobilePhone("any").withMessage("Should have valid contact number"),
+        body("contactNumber").trim().optional(),
     ],
     requestValidationMiddleware,
     updateResourceManager
