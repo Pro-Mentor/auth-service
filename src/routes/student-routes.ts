@@ -31,7 +31,7 @@ router.post(
             .isString()
             .isLength({ min: 3 })
             .withMessage("Should have at least 3 characters"),
-        body("contactNumber").trim().optional().isMobilePhone("any").withMessage("Should have valid contact number"),
+        body("contactNumber").trim().optional(),
         body("studentClass").trim().optional().isArray().withMessage("Should be a array"),
         body("degreeProgram").trim().optional().isArray().withMessage("Should be a array"),
         body("school").trim().optional().isArray().withMessage("Should be a array"),
@@ -89,7 +89,7 @@ router.patch(
             .isLength({ min: 3 })
             .withMessage("Should have at least 3 characters"),
         body("enabled").trim().optional().isBoolean().withMessage("Should be a boolean"),
-        body("contactNumber").trim().optional().isMobilePhone("any").withMessage("Should have valid contact number"),
+        body("contactNumber").trim().optional(),
     ],
     requestValidationMiddleware,
     updateStudent
