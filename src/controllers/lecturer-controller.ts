@@ -330,7 +330,17 @@ const getLecturers = async (req: Request, res: Response, next: NextFunction) => 
             );
         }
 
-        return res.status(HttpStatusCode.Ok).json({ data: result });
+        const finalResult = result.map((lecture) => ({
+            id: lecture.id,
+            email: lecture.email,
+            emailVerified: lecture.email_verified,
+            enabled: lecture.enabled,
+            firstName: lecture.first_name,
+            lastName: lecture.last_name,
+            username: lecture.username,
+        }));
+
+        return res.status(HttpStatusCode.Ok).json({ data: finalResult });
     } catch (error) {
         return next(error);
     }
