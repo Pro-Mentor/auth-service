@@ -1,4 +1,10 @@
-import { AxiosException, ErrorCode, getKeycloakIdpUrl, getTenantIdFromURL } from "@promentor-app/shared-lib";
+import {
+    AxiosException,
+    ErrorCode,
+    getKeycloakIdpUrl,
+    getTenantIdFromURL,
+    invokeKeyclockAuthorizationEndpoint,
+} from "@promentor-app/shared-lib";
 import { NextFunction, Request, Response } from "express";
 
 import { HttpStatusCode } from "axios";
@@ -20,8 +26,19 @@ const getAccessTokenForTheUser = async (req: Request, res: Response, next: NextF
             client_secret: process.env[`${keyTenant.toUpperCase()}_CLIENT_SECRET`] as string,
         });
 
+        const clientDetails = await invokeKeyclockAuthorizationEndpoint(
+            keyclockIdpServerUrl,
+            keyTenant,
+            process.env[`${keyTenant.toUpperCase()}_CLIENT_SECRET`] as string,
+            `Bearer ${response?.access_token}`,
+            process.env.KEYCLOAK_CLIENT_ID as string
+        );
+
         return res.status(HttpStatusCode.Ok).json({
-            access_token: response?.access_token,
+            data: {
+                access_token: response?.access_token,
+                clientData: clientDetails,
+            },
         });
     } catch (error) {
         if (error instanceof AxiosException) {
