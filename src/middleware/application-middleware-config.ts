@@ -31,9 +31,21 @@ const configApplicationMiddleware = (app: Express) => {
      */
     const corsOptions = {
         origin: [
+            "http://sltc-promentor.tech",
+            "https://sltc-promentor.tech",
+            "http://sltc-promentor.local:3000",
+            "https://sltc-promentor.local:3000",
+            "http://sltc-promentor.local",
+            "https://sltc-promentor.local",
+            "http://sltc-promentor.dev",
+            "https://sltc-promentor.dev",
+            "http://sltc-promentor.dev:3000",
+            "https://sltc-promentor.dev:3000",
+            "http://sltc.app.promentor.local:3000",
             /^http:\/\/[a-zA-Z-]+\.app\.promentor\.local:3000$/,
             /^http:\/\/[a-zA-Z-]+\.app\.promentor\.local:8081$/,
             "http://localhost:8081",
+            "https://pro-mentor.live",
         ],
         method: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
